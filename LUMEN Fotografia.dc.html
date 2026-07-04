@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#EBE9E3;}
+  ::selection{background:#14120F;color:#EBE9E3;}
+  image-slot{display:block;background:#dedbd4;}
+  input::placeholder,textarea::placeholder{color:#8A867E;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes scaleIn{from{opacity:0;transform:scale(.93)}to{opacity:1;transform:none}}
+  @keyframes wordIn{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+  @keyframes figIn{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:none}}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes menuIn{from{opacity:0}to{opacity:1}}
+  @keyframes panelIn{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+</style>
+<script>
+(function(){
+  function fit(){
+    var wrap=document.getElementById('heroWrap'), word=document.getElementById('heroWord');
+    if(!wrap||!word) return;
+    word.style.transform='none';
+    var wn=word.offsetWidth, wc=wrap.clientWidth;
+    if(wn>0&&wc>0) word.style.transform='scale('+((wc*0.94)/wn)+')';
+  }
+  var t;
+  function schedule(){ fit(); clearTimeout(t); t=setTimeout(fit,40); }
+  window.__lumenFit=schedule;
+  window.addEventListener('resize', schedule);
+  window.addEventListener('load', schedule);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(schedule);
+  var n=0, iv=setInterval(function(){ fit(); if(++n>30) clearInterval(iv); }, 200);
+  function start(){
+    try{
+      var mo=new MutationObserver(function(){ schedule(); });
+      mo.observe(document.body||document.documentElement,{childList:true,subtree:true});
+    }catch(e){}
+    fit();
+  }
+  if(document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+})();
+</script>
+</helmet>
+<div style="font-family:'Archivo',system-ui,sans-serif;color:#14120F;background:#EBE9E3;overflow-x:hidden;width:100%;min-height:100vh;">
+
+  <sc-if value="{{ showTopBar }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#14120F;color:#CFCBC2;">
+    <div style="max-width:1240px;margin:0 auto;padding:9px clamp(18px,5vw,40px);display:flex;flex-wrap:wrap;gap:6px 22px;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;">
+      <span>Agende sua sessão · WhatsApp (11) 90000-0000</span>
+      <span style="display:flex;gap:22px;">
+        <a href="#" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Instagram</a>
+        <a href="#" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Behance</a>
+        <a href="#" onClick="{{ goContato }}" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Contato</a>
+      </span>
+    </div>
+  </div>
+  </sc-if>
+
+  <header style="position:sticky;top:0;z-index:50;background:rgba(235,233,227,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(20,18,15,.10);">
+    <sc-if value="{{ scrolled }}"><div style="position:absolute;left:0;right:0;bottom:-1px;height:1px;box-shadow:0 10px 34px rgba(20,18,15,.13);"></div></sc-if>
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:1240px;margin:0 auto;padding:18px clamp(18px,5vw,40px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;">
+      <nav style="display:flex;gap:clamp(14px,1.8vw,30px);font-size:12px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;">
+        <a href="#" onClick="{{ goHome }}" style="position:relative;color:#14120F;text-decoration:none;padding-bottom:5px;" style-hover="opacity:.55;">Início<sc-if value="{{ isHome }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goPort }}" style="position:relative;color:#14120F;text-decoration:none;padding-bottom:5px;" style-hover="opacity:.55;">Portfólio<sc-if value="{{ isPort }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goSobre }}" style="position:relative;color:#14120F;text-decoration:none;padding-bottom:5px;" style-hover="opacity:.55;">Sobre<sc-if value="{{ isSobre }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goServ }}" style="position:relative;color:#14120F;text-decoration:none;padding-bottom:5px;" style-hover="opacity:.55;">Serviços<sc-if value="{{ isServ }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goContato }}" style="position:relative;color:#14120F;text-decoration:none;padding-bottom:5px;" style-hover="opacity:.55;">Contato<sc-if value="{{ isContato }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+      </nav>
+      <a href="#" onClick="{{ goHome }}" style="justify-self:center;font-size:clamp(22px,2vw,30px);font-weight:800;letter-spacing:.28em;text-decoration:none;color:#14120F;padding-left:.28em;text-transform:uppercase;">{{ brand }}</a>
+      <div style="justify-self:end;display:flex;align-items:center;gap:clamp(12px,1.5vw,22px);">
+        <a href="#" onClick="{{ goDepo }}" style="position:relative;color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;padding-bottom:5px;" style-hover="opacity:.55;">Depoimentos<sc-if value="{{ isDepo }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goFaq }}" style="position:relative;color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;padding-bottom:5px;" style-hover="opacity:.55;">FAQ<sc-if value="{{ isFaq }}"><span style="position:absolute;left:0;bottom:0;height:2px;width:100%;background:#14120F;transform-origin:left;animation:lineGrow .4s ease both;"></span></sc-if></a>
+        <a href="#" onClick="{{ goAgendar }}" style="display:inline-flex;align-items:center;gap:9px;background:#14120F;color:#F3F1EC;text-decoration:none;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:13px 24px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);" style-active="transform:scale(.96);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"></rect><line x1="3.5" y1="10" x2="20.5" y2="10"></line><line x1="8" y1="3" x2="8" y2="6.5"></line><line x1="16" y1="3" x2="16" y2="6.5"></line></svg>Agendar sessão</a>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:15px clamp(16px,5vw,24px);">
+      <button onClick="{{ toggleMenu }}" aria-label="Menu" style="background:none;border:none;cursor:pointer;color:#14120F;padding:6px;display:flex;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="21" y2="17"></line></svg></button>
+      <a href="#" onClick="{{ goHome }}" style="font-size:24px;font-weight:800;letter-spacing:.26em;text-decoration:none;color:#14120F;padding-left:.26em;text-transform:uppercase;">{{ brand }}</a>
+      <a href="#" onClick="{{ goAgendar }}" aria-label="Agendar" style="color:#14120F;padding:6px;display:flex;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"></rect><line x1="3.5" y1="10" x2="20.5" y2="10"></line><line x1="8" y1="3" x2="8" y2="6.5"></line><line x1="16" y1="3" x2="16" y2="6.5"></line></svg></a>
+    </div>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{ menuOpen }}">
+  <div style="position:fixed;inset:0;z-index:100;background:#14120F;color:#EDEBE6;display:flex;flex-direction:column;padding:22px clamp(20px,6vw,36px);animation:menuIn .3s ease both;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:24px;font-weight:800;letter-spacing:.26em;padding-left:.26em;text-transform:uppercase;">{{ brand }}</span>
+      <button onClick="{{ closeMenu }}" aria-label="Fechar" style="background:none;border:none;cursor:pointer;color:#EDEBE6;padding:6px;display:flex;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg></button>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:6px;margin-top:min(12vh,90px);">
+      <a href="#" onClick="{{ goHome }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Início</a>
+      <a href="#" onClick="{{ goPort }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Portfólio</a>
+      <a href="#" onClick="{{ goSobre }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Sobre</a>
+      <a href="#" onClick="{{ goServ }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Serviços</a>
+      <a href="#" onClick="{{ goContato }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Contato</a>
+      <a href="#" onClick="{{ goDepo }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Depoimentos</a>
+      <a href="#" onClick="{{ goFaq }}" style="color:#EDEBE6;text-decoration:none;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">FAQ</a>
+      <a href="#" onClick="{{ goAgendar }}" style="color:#EDEBE6;text-decoration:underline;text-underline-offset:8px;font-size:clamp(34px,11vw,58px);font-weight:800;letter-spacing:.01em;text-transform:uppercase;line-height:1.16;" style-hover="opacity:.55;">Agendar</a>
+    </nav>
+    <div style="margin-top:auto;display:flex;gap:24px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9C988F;">
+      <span>Instagram</span><span>Behance</span><span>Pinterest</span>
+    </div>
+  </div>
+  </sc-if>
+
+  <main>
+
+  <!-- ============ HOME ============ -->
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Início" style="animation:fadeIn .5s ease both;">
+
+    <section style="background:#EBE9E3;">
+      <div style="max-width:1280px;margin:0 auto;padding:clamp(30px,5vw,58px) clamp(18px,5vw,40px) 0;">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px 20px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:#6E6B64;animation:fadeUp .7s ease both .1s;">
+          <span>Estúdio de fotografia autoral</span>
+          <span>São Paulo · Est. 2017</span>
+        </div>
+        <div style="height:1px;background:rgba(20,18,15,.16);margin-top:16px;"></div>
+        <div id="heroWrap" style="position:relative;margin-top:clamp(16px,2.5vw,28px);display:flex;align-items:center;justify-content:center;">
+          <span id="heroWord" style="font-size:400px;font-weight:900;line-height:.8;white-space:nowrap;color:#14120F;letter-spacing:1px;animation:fadeIn 1s ease both .15s;">{{ brand }}</span>
+        </div>
+      </div>
+      <div style="max-width:1280px;margin:clamp(20px,3vw,34px) auto 0;padding:0 clamp(18px,5vw,40px);">
+        <div style="position:relative;width:100%;height:clamp(320px,48vw,560px);overflow:hidden;animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) both .3s;">
+          <image-slot id="hero-portrait" src="https://picsum.photos/id/1005/1600/900?grayscale" style="width:100%;height:100%;transition:transform 1.1s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.04);" shape="rect" placeholder="Arraste sua foto de capa"></image-slot>
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(19,18,17,.30) 0%, rgba(19,18,17,0) 26%, rgba(19,18,17,0) 54%, rgba(19,18,17,.66) 100%);"></div>
+          <div style="position:absolute;left:clamp(18px,3vw,36px);right:clamp(18px,3vw,36px);bottom:clamp(18px,3vw,30px);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;pointer-events:none;">
+            <div style="color:#F5F3EE;font-size:clamp(18px,2.4vw,30px);font-weight:600;line-height:1.15;max-width:16ch;">Imagens que ficam com você.</div>
+            <div style="color:#EDEBE6;font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:600;text-align:right;line-height:1.9;">Nova temporada<br>2025</div>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:1280px;margin:0 auto;padding:clamp(26px,3.5vw,40px) clamp(18px,5vw,40px) clamp(38px,5vw,64px);display:flex;gap:16px 26px;align-items:center;flex-wrap:wrap;animation:fadeUp .7s ease both .5s;">
+        <a href="#" onClick="{{ goPort }}" style="background:#14120F;color:#F3F1EC;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:17px 34px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);" style-active="transform:scale(.97);">Ver portfólio</a>
+        <a href="#" onClick="{{ goAgendar }}" style="color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:2px solid #14120F;padding-bottom:4px;" style-hover="opacity:.55;">Agendar sessão</a>
+        <span style="margin-left:auto;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;font-weight:500;">Retratos · Casamentos · Ensaios</span>
+      </div>
+    </section>
+
+    <section style="background:#131211;color:#EDEBE6;">
+      <div style="max-width:1240px;margin:0 auto;padding:clamp(40px,6vw,56px) clamp(18px,5vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,44px);">
+        <div data-reveal style="display:flex;gap:22px;align-items:center;">
+          <image-slot id="cat-retratos" src="https://picsum.photos/seed/lumcatr3/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;text-transform:uppercase;">Retratos</h3>
+            <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">Ensaios que revelam quem você é.</p>
+            <a href="#" onClick="{{ goPort }}" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver retratos →</a>
+          </div>
+        </div>
+        <div data-reveal data-reveal-delay="120ms" style="display:flex;gap:22px;align-items:center;">
+          <image-slot id="cat-casamentos" src="https://picsum.photos/seed/lumcatc3/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;text-transform:uppercase;">Casamentos</h3>
+            <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">O seu dia, guardado para sempre.</p>
+            <a href="#" onClick="{{ goPort }}" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver casamentos →</a>
+          </div>
+        </div>
+        <div data-reveal data-reveal-delay="240ms" style="display:flex;gap:22px;align-items:center;">
+          <image-slot id="cat-eventos" src="https://picsum.photos/seed/lumcate3/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+          <div>
+            <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;text-transform:uppercase;">Eventos</h3>
+            <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">Momentos que não voltam, registrados.</p>
+            <a href="#" onClick="{{ goPort }}" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver eventos →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="background:#EBE9E3;border-top:1px solid rgba(20,18,15,.10);border-bottom:1px solid rgba(20,18,15,.10);overflow:hidden;">
+      <div style="display:flex;width:max-content;animation:marquee 26s linear infinite;">
+        <span style="font-size:clamp(28px,5vw,54px);font-weight:900;letter-spacing:.02em;text-transform:uppercase;color:#14120F;padding:16px 0;white-space:nowrap;">RETRATOS&nbsp;&nbsp;✦&nbsp;&nbsp;CASAMENTOS&nbsp;&nbsp;✦&nbsp;&nbsp;ENSAIOS&nbsp;&nbsp;✦&nbsp;&nbsp;EDITORIAL&nbsp;&nbsp;✦&nbsp;&nbsp;EVENTOS&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+        <span aria-hidden="true" style="font-size:clamp(28px,5vw,54px);font-weight:900;letter-spacing:.02em;text-transform:uppercase;color:#14120F;padding:16px 0;white-space:nowrap;">RETRATOS&nbsp;&nbsp;✦&nbsp;&nbsp;CASAMENTOS&nbsp;&nbsp;✦&nbsp;&nbsp;ENSAIOS&nbsp;&nbsp;✦&nbsp;&nbsp;EDITORIAL&nbsp;&nbsp;✦&nbsp;&nbsp;EVENTOS&nbsp;&nbsp;✦&nbsp;&nbsp;</span>
+      </div>
+    </div>
+
+    <section style="background:#131211;">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:stretch;">
+        <div data-reveal style="flex:1 1 380px;padding:clamp(44px,6vw,64px) clamp(20px,5vw,48px);display:flex;flex-direction:column;justify-content:center;color:#EDEBE6;">
+          <span style="font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#9C988F;">Nova temporada</span>
+          <h2 style="margin:16px 0 0;font-size:clamp(52px,8vw,82px);line-height:.9;font-weight:900;text-transform:uppercase;">Novos<br>olhares</h2>
+          <p style="margin:22px 0 32px;font-size:15px;line-height:1.6;color:#B7B3AA;max-width:340px;">Descubra os ensaios mais recentes do estúdio, em preto e branco.</p>
+          <a href="#" onClick="{{ goPort }}" style="align-self:flex-start;background:#EDEBE6;color:#131211;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:16px 32px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);">Explorar ensaios</a>
+        </div>
+        <div style="flex:1 1 380px;overflow:hidden;min-height:clamp(320px,44vw,480px);">
+          <image-slot id="novos-olhares" src="https://picsum.photos/seed/lumnovos6/1200/980?grayscale" style="width:100%;height:100%;min-height:clamp(320px,44vw,480px);transition:transform .8s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.05);" shape="rect" placeholder="Arraste uma foto de destaque"></image-slot>
+        </div>
+      </div>
+    </section>
+
+    <sc-if value="{{ showFeatureStrip }}" hint-placeholder-val="{{ true }}">
+    <section style="background:#E3E0DA;">
+      <div style="max-width:1240px;margin:0 auto;padding:clamp(26px,4vw,32px) clamp(18px,5vw,40px);display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(20px,3vw,32px);">
+        <div data-reveal style="display:flex;align-items:center;gap:16px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 2"></path></svg><div><div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Entrega ágil</div><div style="font-size:12px;color:#6E6B64;margin-top:3px;">Galeria em até 15 dias</div></div></div>
+        <div data-reveal data-reveal-delay="90ms" style="display:flex;align-items:center;gap:16px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"></rect><circle cx="8.5" cy="9.5" r="1.7"></circle><path d="M4 17l4.5-4.5 3.5 3.5 3-3 5 5"></path></svg><div><div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Alta resolução</div><div style="font-size:12px;color:#6E6B64;margin-top:3px;">Arquivos p/ impressão</div></div></div>
+        <div data-reveal data-reveal-delay="180ms" style="display:flex;align-items:center;gap:16px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path></svg><div><div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Edição premium</div><div style="font-size:12px;color:#6E6B64;margin-top:3px;">Tratamento profissional</div></div></div>
+        <div data-reveal data-reveal-delay="270ms" style="display:flex;align-items:center;gap:16px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"></path></svg><div><div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Pagamento seguro</div><div style="font-size:12px;color:#6E6B64;margin-top:3px;">Parcele em até 12x</div></div></div>
+      </div>
+    </section>
+    </sc-if>
+
+    <section style="background:#F1EFEA;">
+      <div style="max-width:1240px;margin:0 auto;padding:clamp(52px,7vw,70px) clamp(18px,5vw,40px) clamp(64px,8vw,92px);">
+        <div data-reveal style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:34px;">
+          <h2 style="margin:0;font-size:clamp(28px,5vw,38px);font-weight:800;text-transform:uppercase;">Seleção {{ brand }}</h2>
+          <a href="#" onClick="{{ goPort }}" style="color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:2px solid #14120F;padding-bottom:3px;" style-hover="opacity:.55;">Ver tudo</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:clamp(14px,2vw,22px);">
+          <figure data-reveal style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p1" src="https://picsum.photos/seed/lumf1x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Marina</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Retrato</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="70ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p2" src="https://picsum.photos/seed/lumf2x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Névoa</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Editorial</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="140ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p3" src="https://picsum.photos/seed/lumf3x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Helena & Rafael</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Casamento</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="210ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p4" src="https://picsum.photos/seed/lumf4x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Estúdio 14</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Retrato</div></figcaption></figure>
+          <figure data-reveal style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p5" src="https://picsum.photos/seed/lumf5x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Litoral</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Ensaio</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="70ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p6" src="https://picsum.photos/seed/lumf6x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Backstage</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Evento</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="140ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p7" src="https://picsum.photos/seed/lumf7x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Contraluz</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Editorial</div></figcaption></figure>
+          <figure data-reveal data-reveal-delay="210ms" style="margin:0;display:flex;flex-direction:column;"><div style="position:relative;overflow:hidden;"><image-slot id="p8" src="https://picsum.photos/seed/lumf8x/560/700?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot><button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;transition:background .2s;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">Amanhecer</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Ensaio</div></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:#14120F;color:#EDEBE6;">
+      <div data-reveal style="max-width:1240px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(18px,5vw,40px);text-align:center;">
+        <span style="font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#9C988F;">Vamos trabalhar juntos</span>
+        <h2 style="margin:18px auto 0;font-size:clamp(38px,7vw,72px);line-height:.95;font-weight:900;text-transform:uppercase;max-width:14ch;">Vamos criar algo juntos?</h2>
+        <p style="margin:22px auto 34px;font-size:15px;line-height:1.6;color:#B7B3AA;max-width:440px;">Conte sua ideia e vamos transformá-la em imagem. Agenda aberta para 2025.</p>
+        <a href="#" onClick="{{ goAgendar }}" style="display:inline-block;background:#EDEBE6;color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:17px 40px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);" style-active="transform:scale(.97);">Agendar sessão</a>
+      </div>
+    </section>
+
+  </div>
+  </sc-if>
+
+  <!-- ============ PORTFÓLIO ============ -->
+  <sc-if value="{{ isPort }}">
+  <div data-screen-label="Portfólio" style="animation:fadeIn .5s ease both;background:#F1EFEA;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">O trabalho</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Portfólio</h1>
+      <p data-reveal style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#4A473F;max-width:520px;">Uma seleção de retratos, casamentos e ensaios editoriais. Filtre por categoria.</p>
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:10px;margin-top:34px;">
+        <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="6">
+          <button onClick="{{ chip.onClick }}" style="{{ chip.style }}">{{ chip.label }}</button>
+        </sc-for>
+      </div>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(28px,4vw,44px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:clamp(14px,2vw,22px);">
+        <sc-for list="{{ filteredWorks }}" as="w" hint-placeholder-count="9">
+          <figure style="margin:0;display:flex;flex-direction:column;animation:scaleIn .5s ease both;"><div style="position:relative;overflow:hidden;"><image-slot id="{{ w.id }}" src="{{ w.src }}" style="width:100%;aspect-ratio:4/5;transition:transform .7s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.06);" shape="rect" placeholder="Arraste sua foto"></image-slot></div><figcaption style="margin-top:14px;"><div style="font-size:14px;font-weight:700;">{{ w.t }}</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">{{ w.c }}</div></figcaption></figure>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ SOBRE ============ -->
+  <sc-if value="{{ isSobre }}">
+  <div data-screen-label="Sobre" style="animation:fadeIn .5s ease both;background:#EBE9E3;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(30px,4vw,40px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">O estúdio</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Sobre</h1>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:0 clamp(18px,5vw,40px) clamp(30px,4vw,40px);display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,56px);align-items:flex-start;">
+      <div data-reveal style="flex:1 1 300px;overflow:hidden;max-width:420px;"><image-slot id="sobre-portrait" src="https://picsum.photos/seed/lumabout5/760/960?grayscale" style="width:100%;aspect-ratio:4/5;transition:transform .8s cubic-bezier(.2,.7,.2,1);" style-hover="transform:scale(1.04);" shape="rect" placeholder="Arraste seu retrato"></image-slot></div>
+      <div data-reveal data-reveal-delay="120ms" style="flex:1 1 380px;">
+        <h2 style="margin:0;font-size:clamp(26px,4vw,40px);line-height:1.05;font-weight:800;text-transform:uppercase;">Fotografia autoral,<br>em preto e branco.</h2>
+        <p style="margin:22px 0 0;font-size:15px;line-height:1.75;color:#4A473F;">O {{ brand }} nasceu do desejo de registrar o essencial: luz, gesto e silêncio. Cada ensaio é conduzido com calma, sem pressa, buscando a imagem que permanece muito depois do clique.</p>
+        <p style="margin:16px 0 0;font-size:15px;line-height:1.75;color:#4A473F;">Trabalhamos com retratos, casamentos e projetos editoriais — sempre com um olhar despojado e atemporal, que valoriza a textura, o contraste e a verdade de cada momento.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;border-top:1px solid rgba(20,18,15,.14);padding-top:28px;">
+          <div><div style="font-size:clamp(32px,5vw,44px);font-weight:900;line-height:1;">8</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:8px;">Anos de estúdio</div></div>
+          <div><div style="font-size:clamp(32px,5vw,44px);font-weight:900;line-height:1;">240+</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:8px;">Ensaios realizados</div></div>
+          <div><div style="font-size:clamp(32px,5vw,44px);font-weight:900;line-height:1;">12</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:8px;">Prêmios</div></div>
+        </div>
+      </div>
+    </section>
+    <section style="background:#131211;color:#EDEBE6;margin-top:clamp(40px,6vw,70px);">
+      <div data-reveal style="max-width:1000px;margin:0 auto;padding:clamp(56px,8vw,96px) clamp(18px,5vw,40px);text-align:center;">
+        <p style="margin:0;font-size:clamp(22px,3.4vw,34px);line-height:1.4;font-weight:500;">"A melhor fotografia é aquela que faz você lembrar não do que viu, mas do que sentiu."</p>
+        <div style="margin-top:26px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#9C988F;">— Ana Lumen, fundadora</div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ SERVIÇOS ============ -->
+  <sc-if value="{{ isServ }}">
+  <div data-screen-label="Serviços" style="animation:fadeIn .5s ease both;background:#F1EFEA;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Pacotes</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Serviços</h1>
+      <p data-reveal style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#4A473F;max-width:520px;">Escolha o formato ideal. Todos os pacotes incluem edição profissional e galeria online.</p>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,30px) clamp(18px,5vw,40px) clamp(40px,5vw,56px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:clamp(18px,2.5vw,26px);">
+        <div data-reveal style="background:#EBE9E3;border:1px solid rgba(20,18,15,.12);padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;" style-hover="transform:translateY(-6px);box-shadow:0 24px 50px rgba(20,18,15,.12);">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6E6B64;">Ensaio</div>
+          <h3 style="margin:10px 0 0;font-size:28px;font-weight:800;text-transform:uppercase;">Retrato</h3>
+          <div style="margin:18px 0 22px;font-size:14px;color:#6E6B64;">a partir de <span style="font-size:26px;font-weight:800;color:#14120F;">R$ 690</span></div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.4;color:#4A473F;border-top:1px solid rgba(20,18,15,.12);padding-top:22px;">
+            <li>1h de sessão · 1 locação</li><li>15 fotos tratadas</li><li>Galeria online privada</li><li>Entrega em até 10 dias</li>
+          </ul>
+          <a href="#" onClick="{{ goAgendar }}" style="margin-top:28px;text-align:center;background:#14120F;color:#F3F1EC;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:15px;transition:opacity .2s;" style-hover="opacity:.85;">Reservar</a>
+        </div>
+        <div data-reveal data-reveal-delay="110ms" style="background:#14120F;color:#EDEBE6;padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;" style-hover="transform:translateY(-6px);box-shadow:0 24px 50px rgba(20,18,15,.28);">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#9C988F;">Mais procurado</div>
+          <h3 style="margin:10px 0 0;font-size:28px;font-weight:800;text-transform:uppercase;">Casamento</h3>
+          <div style="margin:18px 0 22px;font-size:14px;color:#9C988F;">a partir de <span style="font-size:26px;font-weight:800;color:#EDEBE6;">R$ 3.900</span></div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.4;color:#CFCBC2;border-top:1px solid rgba(237,235,230,.18);padding-top:22px;">
+            <li>Cobertura completa do dia</li><li>2 fotógrafos</li><li>400+ fotos tratadas</li><li>Álbum impresso + prévia em 7 dias</li>
+          </ul>
+          <a href="#" onClick="{{ goAgendar }}" style="margin-top:28px;text-align:center;background:#EDEBE6;color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:15px;transition:opacity .2s;" style-hover="opacity:.85;">Reservar</a>
+        </div>
+        <div data-reveal data-reveal-delay="220ms" style="background:#EBE9E3;border:1px solid rgba(20,18,15,.12);padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;" style-hover="transform:translateY(-6px);box-shadow:0 24px 50px rgba(20,18,15,.12);">
+          <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#6E6B64;">Cobertura</div>
+          <h3 style="margin:10px 0 0;font-size:28px;font-weight:800;text-transform:uppercase;">Evento</h3>
+          <div style="margin:18px 0 22px;font-size:14px;color:#6E6B64;">a partir de <span style="font-size:26px;font-weight:800;color:#14120F;">R$ 1.200</span></div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.4;color:#4A473F;border-top:1px solid rgba(20,18,15,.12);padding-top:22px;">
+            <li>Até 4h de cobertura</li><li>200+ fotos tratadas</li><li>Alta resolução</li><li>Entrega em até 12 dias</li>
+          </ul>
+          <a href="#" onClick="{{ goAgendar }}" style="margin-top:28px;text-align:center;background:#14120F;color:#F3F1EC;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:15px;transition:opacity .2s;" style-hover="opacity:.85;">Reservar</a>
+        </div>
+      </div>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(30px,4vw,44px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);">
+      <h2 data-reveal style="margin:0 0 34px;font-size:clamp(26px,4vw,38px);font-weight:800;text-transform:uppercase;">Como funciona</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(20px,3vw,32px);">
+        <div data-reveal style="border-top:2px solid #14120F;padding-top:20px;"><div style="font-size:34px;font-weight:900;">01</div><div style="margin-top:10px;font-size:15px;font-weight:700;text-transform:uppercase;">Conversa</div><p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#6E6B64;">Entendemos sua ideia, referências e expectativas.</p></div>
+        <div data-reveal data-reveal-delay="90ms" style="border-top:2px solid #14120F;padding-top:20px;"><div style="font-size:34px;font-weight:900;">02</div><div style="margin-top:10px;font-size:15px;font-weight:700;text-transform:uppercase;">Sessão</div><p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#6E6B64;">O dia da fotografia, com direção leve e natural.</p></div>
+        <div data-reveal data-reveal-delay="180ms" style="border-top:2px solid #14120F;padding-top:20px;"><div style="font-size:34px;font-weight:900;">03</div><div style="margin-top:10px;font-size:15px;font-weight:700;text-transform:uppercase;">Seleção & edição</div><p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#6E6B64;">Curadoria e tratamento em preto e branco.</p></div>
+        <div data-reveal data-reveal-delay="270ms" style="border-top:2px solid #14120F;padding-top:20px;"><div style="font-size:34px;font-weight:900;">04</div><div style="margin-top:10px;font-size:15px;font-weight:700;text-transform:uppercase;">Entrega</div><p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:#6E6B64;">Galeria online e arquivos em alta resolução.</p></div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ CONTATO ============ -->
+  <sc-if value="{{ isContato }}">
+  <div data-screen-label="Contato" style="animation:fadeIn .5s ease both;background:#EBE9E3;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Fale com o estúdio</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Contato</h1>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,30px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);display:flex;flex-wrap:wrap;gap:clamp(30px,5vw,64px);align-items:flex-start;">
+      <div data-reveal style="flex:1 1 360px;">
+        <sc-if value="{{ sent }}">
+          <div style="border:1px solid rgba(20,18,15,.16);padding:44px 32px;text-align:center;">
+            <div style="font-size:40px;">✦</div>
+            <h3 style="margin:14px 0 8px;font-size:24px;font-weight:800;text-transform:uppercase;">Recebido!</h3>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:#4A473F;">Obrigado pelo contato. Respondemos em até 24h.</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:18px;">
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Nome<input type="text" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;">E-mail<input type="email" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;"></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Tipo de ensaio<select style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;"><option>Retrato</option><option>Casamento</option><option>Evento</option><option>Editorial</option><option>Outro</option></select></label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Mensagem<textarea rows="4" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;resize:vertical;" style-focus="border-bottom-color:#14120F;"></textarea></label>
+          <button type="submit" style="margin-top:8px;cursor:pointer;font-family:inherit;background:#14120F;color:#F3F1EC;border:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:17px 30px;align-self:flex-start;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);">Enviar mensagem</button>
+        </form>
+        </sc-if>
+      </div>
+      <div data-reveal data-reveal-delay="120ms" style="flex:1 1 260px;display:flex;flex-direction:column;gap:28px;">
+        <div><div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#6E6B64;margin-bottom:8px;">E-mail</div><div style="font-size:17px;">ola@lumen.foto</div></div>
+        <div><div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#6E6B64;margin-bottom:8px;">WhatsApp</div><div style="font-size:17px;">(11) 90000-0000</div></div>
+        <div><div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#6E6B64;margin-bottom:8px;">Estúdio</div><div style="font-size:17px;line-height:1.5;">Rua das Artes, 123<br>São Paulo — SP</div></div>
+        <div><div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#6E6B64;margin-bottom:8px;">Atendimento</div><div style="font-size:17px;">Ter–Sáb · 10h às 18h</div></div>
+        <div style="display:flex;gap:22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;">
+          <a href="#" style="color:#14120F;text-decoration:none;border-bottom:1px solid #14120F;padding-bottom:3px;" style-hover="opacity:.55;">Instagram</a>
+          <a href="#" style="color:#14120F;text-decoration:none;border-bottom:1px solid #14120F;padding-bottom:3px;" style-hover="opacity:.55;">Behance</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ AGENDAR ============ -->
+  <sc-if value="{{ isAgendar }}">
+  <div data-screen-label="Agendar" style="animation:fadeIn .5s ease both;background:#EBE9E3;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Reserve sua data</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Agendar</h1>
+      <p data-reveal style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#4A473F;max-width:520px;">Escolha o pacote e a data desejada. Confirmamos a disponibilidade e combinamos os detalhes por e-mail em até 24h.</p>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(20px,3vw,30px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);display:flex;flex-wrap:wrap;gap:clamp(30px,5vw,56px);align-items:flex-start;">
+      <div data-reveal style="flex:2 1 380px;">
+        <sc-if value="{{ bookSent }}">
+          <div style="border:1px solid rgba(20,18,15,.16);padding:clamp(36px,5vw,52px) 32px;text-align:center;">
+            <div style="font-size:40px;">✦</div>
+            <h3 style="margin:14px 0 8px;font-size:24px;font-weight:800;text-transform:uppercase;">Solicitação enviada!</h3>
+            <p style="margin:0 auto;max-width:360px;font-size:14px;line-height:1.6;color:#4A473F;">Recebemos seu pedido de agendamento. Em breve entramos em contato para confirmar a data e combinar os detalhes.</p>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notBookSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ bookSubmit }}" style="display:flex;flex-direction:column;gap:26px;">
+          <div>
+            <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;margin-bottom:14px;">1 · Pacote</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;">
+              <label style="cursor:pointer;border:1px solid rgba(20,18,15,.2);padding:14px;display:flex;flex-direction:column;gap:5px;"><span style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;text-transform:uppercase;"><input type="radio" name="pkg" checked style="accent-color:#14120F;">Retrato</span><span style="font-size:12px;color:#6E6B64;padding-left:24px;">a partir de R$ 690</span></label>
+              <label style="cursor:pointer;border:1px solid rgba(20,18,15,.2);padding:14px;display:flex;flex-direction:column;gap:5px;"><span style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;text-transform:uppercase;"><input type="radio" name="pkg" style="accent-color:#14120F;">Casamento</span><span style="font-size:12px;color:#6E6B64;padding-left:24px;">a partir de R$ 3.900</span></label>
+              <label style="cursor:pointer;border:1px solid rgba(20,18,15,.2);padding:14px;display:flex;flex-direction:column;gap:5px;"><span style="display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;text-transform:uppercase;"><input type="radio" name="pkg" style="accent-color:#14120F;">Evento</span><span style="font-size:12px;color:#6E6B64;padding-left:24px;">a partir de R$ 1.200</span></label>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;margin-bottom:14px;">2 · Data e horário</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px;">
+              <input type="date" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;">
+              <select style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;"><option>Manhã · 9h–12h</option><option>Tarde · 13h–17h</option><option>Fim de tarde · 17h–19h</option><option>A combinar</option></select>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:#6E6B64;margin-bottom:14px;">3 · Seus dados</div>
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <input type="text" placeholder="Nome completo" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:16px;">
+                <input type="email" placeholder="E-mail" required style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;">
+                <input type="tel" placeholder="Telefone / WhatsApp" style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;" style-focus="border-bottom-color:#14120F;">
+              </div>
+              <textarea rows="3" placeholder="Conte um pouco sobre o que você imagina" style="font-family:inherit;font-size:15px;color:#14120F;background:transparent;border:none;border-bottom:1px solid rgba(20,18,15,.3);padding:10px 0;outline:none;resize:vertical;"></textarea>
+            </div>
+          </div>
+          <button type="submit" style="margin-top:4px;cursor:pointer;font-family:inherit;background:#14120F;color:#F3F1EC;border:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:18px 34px;align-self:flex-start;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);">Solicitar agendamento</button>
+        </form>
+        </sc-if>
+      </div>
+      <div data-reveal data-reveal-delay="120ms" style="flex:1 1 240px;background:#131211;color:#CFCBC2;padding:clamp(28px,3vw,36px);">
+        <div style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#9C988F;">Como funciona</div>
+        <div style="display:flex;flex-direction:column;gap:20px;margin-top:22px;">
+          <div style="display:flex;gap:14px;"><span style="font-size:18px;font-weight:900;color:#EDEBE6;">01</span><div><div style="font-size:14px;font-weight:700;color:#EDEBE6;text-transform:uppercase;">Solicitação</div><div style="font-size:13px;line-height:1.55;margin-top:3px;">Você envia data e pacote desejados.</div></div></div>
+          <div style="display:flex;gap:14px;"><span style="font-size:18px;font-weight:900;color:#EDEBE6;">02</span><div><div style="font-size:14px;font-weight:700;color:#EDEBE6;text-transform:uppercase;">Confirmação</div><div style="font-size:13px;line-height:1.55;margin-top:3px;">Retornamos em até 24h com a disponibilidade.</div></div></div>
+          <div style="display:flex;gap:14px;"><span style="font-size:18px;font-weight:900;color:#EDEBE6;">03</span><div><div style="font-size:14px;font-weight:700;color:#EDEBE6;text-transform:uppercase;">Reserva</div><div style="font-size:13px;line-height:1.55;margin-top:3px;">Um sinal de 30% garante a sua data na agenda.</div></div></div>
+        </div>
+        <div style="border-top:1px solid rgba(237,235,230,.16);margin-top:26px;padding-top:22px;font-size:13px;line-height:1.9;">
+          <div style="color:#EDEBE6;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:11px;margin-bottom:8px;">Prefere falar direto?</div>
+          <div>WhatsApp (11) 90000-0000</div>
+          <div>ola@lumen.foto</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ DEPOIMENTOS ============ -->
+  <sc-if value="{{ isDepo }}">
+  <div data-screen-label="Depoimentos" style="animation:fadeIn .5s ease both;background:#EBE9E3;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Quem confiou</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">Depoimentos</h1>
+      <p data-reveal style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#4A473F;max-width:520px;">Histórias de quem passou pelo estúdio e levou para casa muito mais do que fotos.</p>
+    </section>
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(28px,4vw,44px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(18px,2.5vw,26px);">
+        <figure data-reveal style="margin:0;background:#F1EFEA;border:1px solid rgba(20,18,15,.12);padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:34px;font-weight:900;line-height:.6;color:#14120F;">"</div>
+          <blockquote style="margin:14px 0 0;font-size:16px;line-height:1.65;color:#2E2B26;flex:1;">A Ana capturou o nosso casamento exatamente como a gente sentiu aquele dia. Cada foto traz de volta uma emoção que achávamos que só a memória guardava.</blockquote>
+          <figcaption style="margin-top:24px;border-top:1px solid rgba(20,18,15,.12);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <image-slot id="dep1" src="https://picsum.photos/seed/lumdep1/160/160?grayscale" style="width:52px;height:52px;border-radius:50%;flex:0 0 auto;" shape="circle" placeholder="Foto"></image-slot>
+            <div><div style="font-size:14px;font-weight:700;">Helena & Rafael</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Casamento</div></div>
+          </figcaption>
+        </figure>
+        <figure data-reveal data-reveal-delay="110ms" style="margin:0;background:#14120F;color:#EDEBE6;padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:34px;font-weight:900;line-height:.6;color:#EDEBE6;">"</div>
+          <blockquote style="margin:14px 0 0;font-size:16px;line-height:1.65;color:#E4E1DA;flex:1;">Nunca gostei de fotos minhas, e saí do ensaio me reconhecendo em cada imagem. Foi leve do começo ao fim.</blockquote>
+          <figcaption style="margin-top:24px;border-top:1px solid rgba(237,235,230,.18);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <image-slot id="dep2" src="https://picsum.photos/seed/lumdep2/160/160?grayscale" style="width:52px;height:52px;border-radius:50%;flex:0 0 auto;" shape="circle" placeholder="Foto"></image-slot>
+            <div><div style="font-size:14px;font-weight:700;color:#EDEBE6;">Marina Prado</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9C988F;margin-top:4px;">Retrato</div></div>
+          </figcaption>
+        </figure>
+        <figure data-reveal data-reveal-delay="220ms" style="margin:0;background:#F1EFEA;border:1px solid rgba(20,18,15,.12);padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:34px;font-weight:900;line-height:.6;color:#14120F;">"</div>
+          <blockquote style="margin:14px 0 0;font-size:16px;line-height:1.65;color:#2E2B26;flex:1;">Contratamos para o evento da empresa e o resultado superou tudo. Profissionalismo, prazo cumprido e um olhar que dá personalidade para cada registro.</blockquote>
+          <figcaption style="margin-top:24px;border-top:1px solid rgba(20,18,15,.12);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <image-slot id="dep3" src="https://picsum.photos/seed/lumdep3/160/160?grayscale" style="width:52px;height:52px;border-radius:50%;flex:0 0 auto;" shape="circle" placeholder="Foto"></image-slot>
+            <div><div style="font-size:14px;font-weight:700;">Estúdio 14</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Evento corporativo</div></div>
+          </figcaption>
+        </figure>
+        <figure data-reveal data-reveal-delay="70ms" style="margin:0;background:#F1EFEA;border:1px solid rgba(20,18,15,.12);padding:clamp(28px,3vw,38px);display:flex;flex-direction:column;">
+          <div style="font-size:34px;font-weight:900;line-height:.6;color:#14120F;">"</div>
+          <blockquote style="margin:14px 0 0;font-size:16px;line-height:1.65;color:#2E2B26;flex:1;">O preto e branco deu uma alma às imagens que eu não esperava. Recebemos a galeria antes do prazo e ainda com brindes impressos.</blockquote>
+          <figcaption style="margin-top:24px;border-top:1px solid rgba(20,18,15,.12);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <image-slot id="dep4" src="https://picsum.photos/seed/lumdep4/160/160?grayscale" style="width:52px;height:52px;border-radius:50%;flex:0 0 auto;" shape="circle" placeholder="Foto"></image-slot>
+            <div><div style="font-size:14px;font-weight:700;">Sol & Bruno</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Casamento</div></div>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+    <section style="background:#14120F;color:#EDEBE6;">
+      <div data-reveal style="max-width:1240px;margin:0 auto;padding:clamp(56px,8vw,90px) clamp(18px,5vw,40px);text-align:center;">
+        <h2 style="margin:0 auto;font-size:clamp(30px,5vw,52px);line-height:.98;font-weight:900;text-transform:uppercase;max-width:16ch;">Sua história é a próxima?</h2>
+        <a href="#" onClick="{{ goAgendar }}" style="display:inline-block;margin-top:32px;background:#EDEBE6;color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:17px 40px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);" style-active="transform:scale(.97);">Agendar sessão</a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ FAQ ============ -->
+  <sc-if value="{{ isFaq }}">
+  <div data-screen-label="FAQ" style="animation:fadeIn .5s ease both;background:#F1EFEA;">
+    <section style="max-width:1240px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,5vw,40px) clamp(20px,3vw,30px);">
+      <span data-reveal style="display:block;font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#6E6B64;">Dúvidas frequentes</span>
+      <h1 data-reveal style="margin:14px 0 0;font-size:clamp(52px,11vw,120px);line-height:.86;font-weight:900;text-transform:uppercase;">FAQ</h1>
+      <p data-reveal style="margin:24px 0 0;font-size:16px;line-height:1.6;color:#4A473F;max-width:520px;">O que costumam perguntar antes de reservar uma sessão. Se ficar qualquer dúvida, é só chamar no WhatsApp.</p>
+    </section>
+    <section style="max-width:900px;margin:0 auto;padding:clamp(28px,4vw,44px) clamp(18px,5vw,40px) clamp(70px,9vw,110px);">
+      <div data-reveal style="border-top:1px solid rgba(20,18,15,.16);padding:26px 0;">
+        <h3 style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:800;text-transform:uppercase;">Como reservo a minha data?</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#4A473F;max-width:640px;">Você escolhe o pacote e a data na página de agendamento. Confirmamos a disponibilidade em até 24h e um sinal de 30% garante a sua data na agenda.</p>
+      </div>
+      <div data-reveal style="border-top:1px solid rgba(20,18,15,.16);padding:26px 0;">
+        <h3 style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:800;text-transform:uppercase;">Em quanto tempo recebo as fotos?</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#4A473F;max-width:640px;">Ensaios de retrato ficam prontos em até 10 dias. Casamentos têm prévia em 7 dias e galeria completa em até 15 dias, tudo em uma galeria online privada.</p>
+      </div>
+      <div data-reveal style="border-top:1px solid rgba(20,18,15,.16);padding:26px 0;">
+        <h3 style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:800;text-transform:uppercase;">As fotos são só em preto e branco?</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#4A473F;max-width:640px;">O preto e branco autoral é a assinatura do estúdio, mas entregamos versões em cor sempre que o projeto pede. A gente combina o tratamento antes da sessão.</p>
+      </div>
+      <div data-reveal style="border-top:1px solid rgba(20,18,15,.16);padding:26px 0;">
+        <h3 style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:800;text-transform:uppercase;">Posso remarcar se precisar?</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#4A473F;max-width:640px;">Sim. Remarcações feitas com pelo menos 48h de antecedência mantêm o sinal para a nova data, sem custo adicional.</p>
+      </div>
+      <div data-reveal style="border-top:1px solid rgba(20,18,15,.16);border-bottom:1px solid rgba(20,18,15,.16);padding:26px 0;">
+        <h3 style="margin:0;font-size:clamp(18px,2.4vw,22px);font-weight:800;text-transform:uppercase;">Vocês atendem fora de São Paulo?</h3>
+        <p style="margin:12px 0 0;font-size:15px;line-height:1.7;color:#4A473F;max-width:640px;">Atendemos toda a Grande São Paulo e viajamos para outras cidades sob consulta. Custos de deslocamento entram no orçamento com transparência.</p>
+      </div>
+      <div data-reveal style="margin-top:clamp(36px,5vw,52px);text-align:center;">
+        <p style="margin:0 0 20px;font-size:15px;color:#4A473F;">Ficou com outra dúvida?</p>
+        <a href="#" onClick="{{ goContato }}" style="display:inline-block;background:#14120F;color:#F3F1EC;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:16px 36px;transition:transform .25s ease,opacity .25s ease;" style-hover="opacity:.85;transform:translateY(-2px);" style-active="transform:scale(.97);">Falar com o estúdio</a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  </main>
+
+  <footer style="background:#131211;color:#B7B3AA;border-top:1px solid rgba(237,235,230,.12);">
+    <div style="max-width:1240px;margin:0 auto;padding:clamp(52px,7vw,74px) clamp(18px,5vw,40px) clamp(26px,4vw,36px);">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(26px,4vw,42px);padding-bottom:clamp(36px,5vw,50px);border-bottom:1px solid rgba(237,235,230,.14);">
+        <div data-reveal style="flex:2 1 250px;">
+          <div style="font-size:clamp(28px,4vw,34px);font-weight:800;letter-spacing:.24em;color:#EDEBE6;padding-left:.24em;text-transform:uppercase;">{{ brand }}</div>
+          <p style="margin:20px 0 0;font-size:13px;line-height:1.65;max-width:250px;">Estúdio de fotografia autoral. Retratos, casamentos e ensaios em preto e branco.</p>
+          <div style="margin-top:20px;font-size:13px;line-height:1.9;color:#8F8B83;">
+            <div>ola@lumen.foto</div>
+            <div>São Paulo · Est. 2017</div>
+          </div>
+        </div>
+        <sc-if value="{{ isWide }}"><div style="width:1px;align-self:stretch;background:rgba(237,235,230,.13);flex:0 0 auto;"></div></sc-if>
+        <div data-reveal data-reveal-delay="90ms" style="flex:1 1 150px;">
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Navegar</div>
+          <a href="#" onClick="{{ goHome }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Início</a>
+          <a href="#" onClick="{{ goPort }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Portfólio</a>
+          <a href="#" onClick="{{ goSobre }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Sobre</a>
+          <a href="#" onClick="{{ goServ }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Serviços</a>
+          <a href="#" onClick="{{ goAgendar }}" style="display:block;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Agendar</a>
+        </div>
+        <sc-if value="{{ isWide }}"><div style="width:1px;align-self:stretch;background:rgba(237,235,230,.13);flex:0 0 auto;"></div></sc-if>
+        <div data-reveal data-reveal-delay="180ms" style="flex:1 1 150px;">
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Serviços</div>
+          <a href="#" onClick="{{ goServ }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Retratos</a>
+          <a href="#" onClick="{{ goServ }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Casamentos</a>
+          <a href="#" onClick="{{ goServ }}" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Eventos</a>
+          <a href="#" onClick="{{ goServ }}" style="display:block;font-size:13px;color:#B7B3AA;text-decoration:none;transition:color .2s ease,transform .2s ease;" style-hover="color:#fff;transform:translateX(3px);" style-active="opacity:.5;">Editorial</a>
+        </div>
+        <sc-if value="{{ isWide }}"><div style="width:1px;align-self:stretch;background:rgba(237,235,230,.13);flex:0 0 auto;"></div></sc-if>
+        <div data-reveal data-reveal-delay="270ms" style="flex:1.5 1 220px;">
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Newsletter</div>
+          <div style="display:flex;align-items:center;border-bottom:1px solid rgba(237,235,230,.3);max-width:300px;">
+            <input placeholder="Seu e-mail" style="flex:1;background:transparent;border:none;color:#EDEBE6;padding:10px 0;font-size:13px;outline:none;font-family:inherit;">
+            <button aria-label="Assinar" style="background:transparent;border:none;color:#EDEBE6;font-size:18px;cursor:pointer;padding:6px;transition:transform .2s ease,opacity .2s ease;" style-hover="opacity:.6;transform:translateX(3px);" style-active="transform:scale(.85);">→</button>
+          </div>
+          <div style="display:flex;gap:22px;margin-top:22px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+            <a href="#" style="color:#B7B3AA;text-decoration:none;transition:color .2s ease;" style-hover="color:#fff;" style-active="opacity:.5;">Instagram</a>
+            <a href="#" style="color:#B7B3AA;text-decoration:none;transition:color .2s ease;" style-hover="color:#fff;" style-active="opacity:.5;">Behance</a>
+            <a href="#" style="color:#B7B3AA;text-decoration:none;transition:color .2s ease;" style-hover="color:#fff;" style-active="opacity:.5;">Pinterest</a>
+          </div>
+        </div>
+      </div>
+      <div data-reveal style="display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding-top:24px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;">
+        <span>Desenvolvido por Kaylan Argollo</span>
+        <span style="display:flex;gap:24px;"><a href="#" style="color:#B7B3AA;text-decoration:none;transition:color .2s ease;" style-hover="color:#fff;" style-active="opacity:.5;">Privacidade</a><a href="#" style="color:#B7B3AA;text-decoration:none;transition:color .2s ease;" style-hover="color:#fff;" style-active="opacity:.5;">Termos</a></span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;brandName&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;LUMEN&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marca&quot;},
+  &quot;showTopBar&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},
+  &quot;showFeatureStrip&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}
+}">
+class Component extends DCLogic {
+  state = {
+    page: 'home',
+    w: 1280,
+    menuOpen: false,
+    scrolled: false,
+    filter: 'Tudo',
+    sent: false,
+    bookSent: false,
+  };
+
+  componentDidMount() {
+    this._fit = this._fit.bind(this);
+    this._scheduleFit = this._scheduleFit.bind(this);
+    this._measure = () => { const rw = window.innerWidth; if (rw && rw !== this.state.w) this.setState({ w: rw }); };
+    this._onResize = () => { this._measure(); this._scheduleFit(); this._checkReveals(); };
+    this._onScroll = () => {
+      this._checkReveals();
+      const s = window.scrollY > 40;
+      if (s !== this.state.scrolled) this.setState({ scrolled: s });
+    };
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    if (window.ResizeObserver) {
+      this._ro = new ResizeObserver(() => { this._measure(); this._scheduleFit(); });
+      try { this._ro.observe(document.documentElement); } catch (e) {}
+    }
+    // Correct the viewport width ASAP — the construction value can be stale (mobile header flash).
+    this._measure();
+    requestAnimationFrame(() => { this._measure(); this._scheduleFit(); });
+    this._t0 = setTimeout(this._measure, 60);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this._scheduleFit());
+    this._t1 = setTimeout(this._scheduleFit, 250);
+    this._t2 = setTimeout(this._scheduleFit, 900);
+    this._scan();
+    this._scheduleFit();
+    this._checkReveals();
+    this._tR1 = setTimeout(() => this._checkReveals(), 250);
+    this._tR2 = setTimeout(() => this._checkReveals(), 800);
+    // Unconditional insurance: content can never stay invisible, even if scroll never fires.
+    this._safety = setTimeout(() => { this._revealAll(); }, 3000);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.page !== this.state.page) { try { window.scrollTo(0, 0); } catch (e) {} }
+    this._scan();
+    this._scheduleFit();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    clearTimeout(this._t0); clearTimeout(this._t1); clearTimeout(this._t2); clearTimeout(this._safety);
+    clearTimeout(this._tR1); clearTimeout(this._tR2);
+    if (this._fitRaf) cancelAnimationFrame(this._fitRaf);
+    if (this._ro) this._ro.disconnect();
+  }
+
+  _scheduleFit() {
+    if (this._fitRaf) cancelAnimationFrame(this._fitRaf);
+    this._fitRaf = requestAnimationFrame(() => {
+      this._fitRaf = null;
+      // second frame guarantees layout is settled before we measure
+      this._fitRaf = requestAnimationFrame(() => { this._fitRaf = null; this._fit(); });
+    });
+  }
+
+  _fit() {
+    const wrap = document.getElementById('heroWrap');
+    const word = document.getElementById('heroWord');
+    if (!wrap || !word) return;
+    word.style.transform = 'none';
+    const wn = word.offsetWidth, wc = wrap.clientWidth;
+    if (wn > 0 && wc > 0) {
+      word.style.transform = 'scale(' + ((wc * 0.94) / wn) + ')';
+    }
+  }
+
+  _scan() {
+    try {
+      var nodes = document.querySelectorAll('[data-reveal]:not([data-reveal-init])');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        el.setAttribute('data-reveal-init', '');
+        var d = el.getAttribute('data-reveal-delay') || '0ms';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(26px)';
+        el.style.transition = 'opacity .8s cubic-bezier(.2,.7,.2,1) ' + d + ', transform .8s cubic-bezier(.2,.7,.2,1) ' + d;
+        el.style.willChange = 'opacity, transform';
+      }
+      this._checkReveals();
+    } catch (e) {
+      this._revealAll();
+    }
+  }
+
+  // Reveal-on-scroll via geometry — works even where IntersectionObserver/rAF are throttled.
+  _checkReveals() {
+    try {
+      var vh = window.innerHeight || 800;
+      var nodes = document.querySelectorAll('[data-reveal]:not([data-reveal-done])');
+      for (var i = 0; i < nodes.length; i++) {
+        var el = nodes[i];
+        if (el.getBoundingClientRect().top < vh * 0.9) {
+          el.setAttribute('data-reveal-done', '');
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        }
+      }
+    } catch (e) {}
+  }
+
+  _revealAll() {
+    try {
+      var nodes = document.querySelectorAll('[data-reveal]:not([data-reveal-done])');
+      for (var i = 0; i < nodes.length; i++) {
+        nodes[i].setAttribute('data-reveal-done', '');
+        nodes[i].style.opacity = '1';
+        nodes[i].style.transform = 'none';
+      }
+    } catch (e) {}
+  }
+
+  go(page) { this.setState({ page: page, menuOpen: false }); }
+
+  renderVals() {
+    const raw = (this.props.brandName == null || this.props.brandName === '') ? 'LUMEN' : String(this.props.brandName);
+    const brand = raw.toUpperCase();
+    const w = this.state.w;
+    const isDesktop = w >= 860;
+    const page = this.state.page;
+    const mk = (p) => () => this.go(p);
+
+    const works = [
+      { id: 'g1', src: 'https://picsum.photos/seed/lumg1a/560/700?grayscale', t: 'Marina', c: 'Retrato' },
+      { id: 'g2', src: 'https://picsum.photos/seed/lumg2a/560/700?grayscale', t: 'Helena & Rafael', c: 'Casamento' },
+      { id: 'g3', src: 'https://picsum.photos/seed/lumg3a/560/700?grayscale', t: 'Névoa', c: 'Editorial' },
+      { id: 'g4', src: 'https://picsum.photos/seed/lumg4a/560/700?grayscale', t: 'Litoral', c: 'Ensaio' },
+      { id: 'g5', src: 'https://picsum.photos/seed/lumg5a/560/700?grayscale', t: 'Backstage', c: 'Evento' },
+      { id: 'g6', src: 'https://picsum.photos/seed/lumg6a/560/700?grayscale', t: 'Contraluz', c: 'Editorial' },
+      { id: 'g7', src: 'https://picsum.photos/seed/lumg7a/560/700?grayscale', t: 'Estúdio 14', c: 'Retrato' },
+      { id: 'g8', src: 'https://picsum.photos/seed/lumg8a/560/700?grayscale', t: 'Sol & Bruno', c: 'Casamento' },
+      { id: 'g9', src: 'https://picsum.photos/seed/lumg9a/560/700?grayscale', t: 'Cortejo', c: 'Evento' },
+      { id: 'g10', src: 'https://picsum.photos/seed/lumg10a/560/700?grayscale', t: 'Silhueta', c: 'Editorial' },
+      { id: 'g11', src: 'https://picsum.photos/seed/lumg11a/560/700?grayscale', t: 'Amanhecer', c: 'Ensaio' },
+      { id: 'g12', src: 'https://picsum.photos/seed/lumg12a/560/700?grayscale', t: 'Retiro', c: 'Ensaio' },
+    ];
+    const cats = ['Tudo', 'Retrato', 'Casamento', 'Editorial', 'Ensaio', 'Evento'];
+    const filter = this.state.filter;
+    const chips = cats.map((c) => {
+      const on = filter === c;
+      return {
+        label: c,
+        style: 'cursor:pointer;font-family:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:10px 20px;border:1px solid #14120F;transition:background .2s,color .2s;background:' + (on ? '#14120F' : 'transparent') + ';color:' + (on ? '#F3F1EC' : '#14120F') + ';',
+        onClick: () => this.setState({ filter: c }),
+      };
+    });
+    const filteredWorks = filter === 'Tudo' ? works : works.filter((x) => x.c === filter);
+
+    return {
+      brand: brand,
+      showTopBar: this.props.showTopBar ?? true,
+      showFeatureStrip: this.props.showFeatureStrip ?? true,
+      isDesktop: isDesktop,
+      isMobile: !isDesktop,
+      isWide: w >= 1080,
+      menuOpen: this.state.menuOpen,
+      scrolled: this.state.scrolled,
+      isHome: page === 'home',
+      isPort: page === 'portfolio',
+      isSobre: page === 'sobre',
+      isServ: page === 'servicos',
+      isContato: page === 'contato',
+      isAgendar: page === 'agendar',
+      isDepo: page === 'depoimentos',
+      isFaq: page === 'faq',
+      goHome: mk('home'),
+      goPort: mk('portfolio'),
+      goSobre: mk('sobre'),
+      goServ: mk('servicos'),
+      goContato: mk('contato'),
+      goAgendar: mk('agendar'),
+      goDepo: mk('depoimentos'),
+      goFaq: mk('faq'),
+      toggleMenu: () => this.setState((s) => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+      chips: chips,
+      filteredWorks: filteredWorks,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      submit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ sent: true }); },
+      bookSent: this.state.bookSent,
+      notBookSent: !this.state.bookSent,
+      bookSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ bookSent: true }); },
+      year: 2025,
+    };
+  }
+}
+</script>
+</body>
+</html>

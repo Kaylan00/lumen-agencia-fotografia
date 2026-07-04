@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#EBE9E3;}
+  ::selection{background:#14120F;color:#EBE9E3;}
+  image-slot{display:block;background:#dedbd4;}
+  input::placeholder{color:#7E7A72;}
+</style>
+</helmet>
+<div data-screen-label="Home" style="font-family:'Archivo',system-ui,sans-serif;color:#14120F;background:#EBE9E3;width:100%;overflow-x:hidden;">
+
+  <sc-if value="{{ showTopBar }}" hint-placeholder-val="{{ true }}">
+  <div style="background:#14120F;color:#CFCBC2;">
+    <div style="max-width:1240px;margin:0 auto;padding:9px 40px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;">
+      <span>Agende sua sessão · WhatsApp (11) 90000-0000</span>
+      <span style="display:flex;gap:26px;">
+        <a href="#" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Instagram</a>
+        <a href="#" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Portfólio</a>
+        <a href="#" style="color:#CFCBC2;text-decoration:none;" style-hover="color:#fff;">Contato</a>
+      </span>
+    </div>
+  </div>
+  </sc-if>
+
+  <header style="background:#EBE9E3;border-bottom:1px solid rgba(20,18,15,.10);">
+    <div style="max-width:1240px;margin:0 auto;padding:22px 40px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;">
+      <nav style="display:flex;gap:30px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;">
+        <a href="#" style="color:#14120F;text-decoration:none;" style-hover="opacity:.55;">Portfólio</a>
+        <a href="#" style="color:#14120F;text-decoration:none;" style-hover="opacity:.55;">Ensaios</a>
+        <a href="#" style="color:#14120F;text-decoration:none;" style-hover="opacity:.55;">Casamentos</a>
+        <a href="#" style="color:#14120F;text-decoration:none;" style-hover="opacity:.55;">Sobre</a>
+      </nav>
+      <a href="#" style="justify-self:center;font-size:30px;font-weight:800;letter-spacing:.28em;text-decoration:none;color:#14120F;padding-left:.28em;text-transform:uppercase;">{{ brand }}</a>
+      <div style="justify-self:end;display:flex;gap:26px;align-items:center;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;">
+        <a href="#" style="display:flex;align-items:center;gap:7px;color:#14120F;text-decoration:none;" style-hover="opacity:.55;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>Buscar</a>
+        <a href="#" style="display:flex;align-items:center;gap:7px;color:#14120F;text-decoration:none;" style-hover="opacity:.55;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"></circle><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"></path></svg>Entrar</a>
+        <a href="#" style="display:flex;align-items:center;gap:7px;color:#14120F;text-decoration:none;" style-hover="opacity:.55;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg>Salvos</a>
+        <a href="#" style="display:flex;align-items:center;gap:7px;color:#14120F;text-decoration:none;" style-hover="opacity:.55;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"></rect><line x1="3.5" y1="10" x2="20.5" y2="10"></line><line x1="8" y1="3" x2="8" y2="6.5"></line><line x1="16" y1="3" x2="16" y2="6.5"></line></svg>Agendar</a>
+      </div>
+    </div>
+  </header>
+
+  <section style="background:#EBE9E3;">
+    <div style="max-width:1240px;margin:0 auto;padding:26px 40px 44px;position:relative;">
+      <div style="position:absolute;left:40px;top:34px;z-index:3;font-size:13px;letter-spacing:.24em;line-height:2.05;text-transform:uppercase;font-weight:600;">
+        Imagens<br>que ficam<br>com você.
+        <div style="width:46px;height:2px;background:#14120F;margin-top:14px;"></div>
+      </div>
+      <div style="position:relative;height:560px;display:flex;align-items:center;justify-content:center;">
+        <div ref="{{ setHeroWrap }}" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;pointer-events:none;overflow:hidden;">
+          <span ref="{{ setHeroWord }}" style="font-size:400px;font-weight:900;line-height:.78;white-space:nowrap;color:#14120F;letter-spacing:2px;transform:scale(0.78);transform-origin:center center;will-change:transform;">{{ brand }}</span>
+        </div>
+        <image-slot id="hero-portrait" src="https://picsum.photos/seed/lumenhero7/780/1180?grayscale" style="position:relative;z-index:2;width:352px;height:540px;" shape="rect" placeholder="Arraste sua foto principal"></image-slot>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:10px;">
+        <div style="display:flex;align-items:center;gap:30px;">
+          <a href="#" style="background:#14120F;color:#F3F1EC;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;padding:16px 30px;" style-hover="opacity:.85;">Ver portfólio</a>
+          <a href="#" style="color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:2px solid #14120F;padding-bottom:3px;" style-hover="opacity:.55;">Agendar sessão</a>
+        </div>
+        <div style="text-align:right;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;line-height:1.85;">
+          Nova<br>temporada<br>2025
+          <div style="width:54px;height:2px;background:#14120F;margin-top:10px;margin-left:auto;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#131211;color:#EDEBE6;">
+    <div style="max-width:1240px;margin:0 auto;padding:56px 40px;display:grid;grid-template-columns:repeat(3,1fr);gap:44px;">
+      <div style="display:flex;gap:22px;align-items:center;">
+        <image-slot id="cat-retratos" src="https://picsum.photos/seed/lumencatA/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+        <div>
+          <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;">Retratos</h3>
+          <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">Ensaios que revelam quem você é.</p>
+          <a href="#" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver retratos →</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:22px;align-items:center;">
+        <image-slot id="cat-casamentos" src="https://picsum.photos/seed/lumencatB/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+        <div>
+          <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;">Casamentos</h3>
+          <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">O seu dia, guardado para sempre.</p>
+          <a href="#" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver casamentos →</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:22px;align-items:center;">
+        <image-slot id="cat-eventos" src="https://picsum.photos/seed/lumencatC/320/400?grayscale" style="width:118px;height:150px;flex:0 0 auto;" shape="rect" placeholder="Foto"></image-slot>
+        <div>
+          <h3 style="margin:0 0 10px;font-size:21px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;">Eventos</h3>
+          <p style="margin:0 0 16px;font-size:13px;line-height:1.5;color:#9C988F;">Momentos que não voltam, registrados.</p>
+          <a href="#" style="color:#EDEBE6;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;border-bottom:1px solid #EDEBE6;padding-bottom:4px;" style-hover="opacity:.6;">Ver eventos →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#131211;">
+    <div style="max-width:1240px;margin:0 auto;display:flex;align-items:stretch;min-height:480px;">
+      <div style="flex:0 0 44%;padding:64px 48px 64px 40px;display:flex;flex-direction:column;justify-content:center;color:#EDEBE6;">
+        <span style="font-size:13px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#9C988F;">Nova temporada</span>
+        <h2 style="margin:18px 0 0;font-size:82px;line-height:.9;font-weight:900;letter-spacing:.01em;text-transform:uppercase;">Novos<br>olhares</h2>
+        <p style="margin:24px 0 34px;font-size:15px;line-height:1.6;color:#B7B3AA;max-width:320px;">Descubra os ensaios mais recentes do estúdio, em preto e branco.</p>
+        <a href="#" style="align-self:flex-start;background:#EDEBE6;color:#131211;text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;padding:16px 32px;" style-hover="opacity:.85;">Explorar ensaios</a>
+      </div>
+      <image-slot id="novos-olhares" src="https://picsum.photos/seed/lumenvibes4/1200/980?grayscale" style="flex:1 1 auto;align-self:stretch;min-height:480px;" shape="rect" placeholder="Arraste uma foto de destaque"></image-slot>
+    </div>
+  </section>
+
+  <sc-if value="{{ showFeatureStrip }}" hint-placeholder-val="{{ true }}">
+  <section style="background:#E3E0DA;">
+    <div style="max-width:1240px;margin:0 auto;padding:30px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 2"></path></svg>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Entrega ágil</div>
+          <div style="font-size:12px;color:#6E6B64;margin-top:3px;">Galeria em até 15 dias</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"></rect><circle cx="8.5" cy="9.5" r="1.7"></circle><path d="M4 17l4.5-4.5 3.5 3.5 3-3 5 5"></path></svg>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Alta resolução</div>
+          <div style="font-size:12px;color:#6E6B64;margin-top:3px;">Arquivos prontos p/ impressão</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M18.4 15.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7z"></path></svg>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Edição premium</div>
+          <div style="font-size:12px;color:#6E6B64;margin-top:3px;">Tratamento profissional</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#14120F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"></path></svg>
+        <div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">Pagamento seguro</div>
+          <div style="font-size:12px;color:#6E6B64;margin-top:3px;">Parcele em até 12x</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </sc-if>
+
+  <section style="background:#F1EFEA;">
+    <div style="max-width:1240px;margin:0 auto;padding:70px 40px 92px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:34px;">
+        <h2 style="margin:0;font-size:38px;font-weight:800;letter-spacing:.01em;text-transform:uppercase;">Seleção {{ brand }}</h2>
+        <a href="#" style="color:#14120F;text-decoration:none;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border-bottom:2px solid #14120F;padding-bottom:3px;" style-hover="opacity:.55;">Ver tudo</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;">
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p1" src="https://picsum.photos/seed/lumenp1x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Marina</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Retrato</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p2" src="https://picsum.photos/seed/lumenp2x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Névoa</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Editorial</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p3" src="https://picsum.photos/seed/lumenp3x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Helena & Rafael</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Casamento</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p4" src="https://picsum.photos/seed/lumenp4x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Estúdio 14</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Retrato</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p5" src="https://picsum.photos/seed/lumenp5x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Litoral</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Ensaio</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p6" src="https://picsum.photos/seed/lumenp6x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Backstage</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Evento</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p7" src="https://picsum.photos/seed/lumenp7x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Contraluz</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Editorial</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;">
+          <div style="position:relative;">
+            <image-slot id="p8" src="https://picsum.photos/seed/lumenp8x/560/680?grayscale" style="width:100%;height:322px;" shape="rect" placeholder="Arraste sua foto"></image-slot>
+            <button style="position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(243,241,236,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#14120F;" style-hover="background:#fff;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20C12 20 4 15 4 9.4A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 8 2.4C20 15 12 20 12 20Z"></path></svg></button>
+          </div>
+          <div style="margin-top:14px;"><div style="font-size:14px;font-weight:700;letter-spacing:.01em;">Amanhecer</div><div style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6E6B64;margin-top:4px;">Ensaio</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#131211;color:#B7B3AA;">
+    <div style="max-width:1240px;margin:0 auto;padding:70px 40px 40px;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1.4fr;gap:40px;padding-bottom:52px;border-bottom:1px solid rgba(237,235,230,.12);">
+        <div>
+          <div style="font-size:34px;font-weight:800;letter-spacing:.24em;color:#EDEBE6;padding-left:.24em;text-transform:uppercase;">{{ brand }}</div>
+          <p style="margin:22px 0 0;font-size:13px;line-height:1.65;max-width:250px;">Estúdio de fotografia autoral. Retratos, casamentos e ensaios em preto e branco.</p>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Navegar</div>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Portfólio</a>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Ensaios</a>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Casamentos</a>
+          <a href="#" style="display:block;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Sobre</a>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Serviços</div>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Retratos</a>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Eventos</a>
+          <a href="#" style="display:block;margin-bottom:12px;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Corporativo</a>
+          <a href="#" style="display:block;font-size:13px;color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Impressões</a>
+        </div>
+        <div>
+          <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#EDEBE6;font-weight:700;margin-bottom:18px;">Newsletter</div>
+          <div style="display:flex;align-items:center;border-bottom:1px solid rgba(237,235,230,.3);max-width:280px;">
+            <input placeholder="Seu e-mail" style="flex:1;background:transparent;border:none;color:#EDEBE6;padding:10px 0;font-size:13px;outline:none;font-family:inherit;">
+            <button style="background:transparent;border:none;color:#EDEBE6;font-size:18px;cursor:pointer;padding:6px;" style-hover="opacity:.6;">→</button>
+          </div>
+          <div style="margin-top:24px;font-size:13px;line-height:1.9;">
+            <div>ola@lumen.foto</div>
+            <div>WhatsApp (11) 90000-0000</div>
+          </div>
+          <div style="display:flex;gap:22px;margin-top:16px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;">
+            <a href="#" style="color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Instagram</a>
+            <a href="#" style="color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Behance</a>
+            <a href="#" style="color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Pinterest</a>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:26px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;">
+        <span>© 2025 {{ brand }} Fotografia — Todos os direitos reservados</span>
+        <span style="display:flex;gap:24px;">
+          <a href="#" style="color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Privacidade</a>
+          <a href="#" style="color:#B7B3AA;text-decoration:none;" style-hover="color:#fff;">Termos</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;brandName&quot;: {&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;LUMEN&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Marca&quot;},
+  &quot;showTopBar&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},
+  &quot;showFeatureStrip&quot;: {&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}
+}">
+class Component extends DCLogic {
+  componentDidMount() {
+    this._fit = this._fit.bind(this);
+    this._fit();
+    window.addEventListener('resize', this._fit);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this._fit());
+    this._t1 = setTimeout(this._fit, 250);
+    this._t2 = setTimeout(this._fit, 900);
+  }
+  componentDidUpdate() { if (typeof this._fit === 'function') this._fit(); }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._fit);
+    clearTimeout(this._t1); clearTimeout(this._t2);
+  }
+  _fit() {
+    const wrap = this._wrap, word = this._word;
+    if (!wrap || !word) return;
+    const wn = word.offsetWidth, wc = wrap.clientWidth;
+    if (wn > 0 && wc > 0) {
+      word.style.transform = 'scale(' + ((wc * 0.98) / wn) + ')';
+    }
+  }
+  renderVals() {
+    const raw = (this.props.brandName == null || this.props.brandName === '') ? 'LUMEN' : String(this.props.brandName);
+    return {
+      brand: raw.toUpperCase(),
+      showTopBar: this.props.showTopBar ?? true,
+      showFeatureStrip: this.props.showFeatureStrip ?? true,
+      setHeroWrap: (el) => { this._wrap = el; },
+      setHeroWord: (el) => { this._word = el; if (typeof this._fit === 'function') this._fit(); },
+    };
+  }
+}
+</script>
+</body>
+</html>
